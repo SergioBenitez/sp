@@ -1,0 +1,36 @@
+sp: split and run in parallel
+
+Usage: sp <TEMPLATE> :: [SUBSTITUTION]...
+       sp [COMMAND] :: [COMMAND] :: ... :: [COMMAND]
+
+Description:
+
+    Runs any number of commands in parallel. Waits until all of those commands
+    finish. Exits with the highest status code returned by any of the commands.
+
+Template:
+
+  The <TEMPLATE> variant runs variants of <TEMPLATE> in parallel, once for each
+  [SUBSTITUTION], with any {} in [TEMPLATE] replaced with the [SUBSTITUTION].
+
+  Example:
+
+    Run 'echo 1', 'echo 2' and 'echo 3' in parallel
+
+        sp echo {} :: 1 2 3
+
+    Run 'echo 1 1', 'echo 2 2' and 'echo 3 3' in parallel
+
+        sp echo {} {} :: 1 2 3
+
+Command:
+
+  The [COMMAND]... variant runs each [COMMAND], separated by ::, in parallel.
+
+    Run 'echo 1', 'echo 2' and 'echo 3' in parallel without a template
+
+        sp echo 1 :: echo 2 :: echo 3
+
+    Run a, b, and c in parallel
+
+        sp a foo bar :: "b 'baz  bar'" :: c

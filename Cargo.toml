@@ -1,0 +1,8 @@
+[package]
+name = "sp"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+subprocess = "0.2.9"
+os_str_bytes = { version = "6.5", features = ["raw_os_str"]}
