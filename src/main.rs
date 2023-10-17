@@ -12,8 +12,10 @@ fn templatize(template: &[OsString], args: &[OsString]) -> Vec<OsString> {
     let template = template.to_str().expect("template must be UTF-8");
     args.iter()
         .map(|arg| arg.to_str().expect("template substitution must be UTF-8"))
-        .map(|param| template.replace(TEMPLATE_STR, param))
-        .map(|command| OsString::from(command))
+        .map(|param| match param.contains(" ") {
+            true => template.replace(TEMPLATE_STR, &format!("\"{param}\"")).into(),
+            false => template.replace(TEMPLATE_STR, param).into(),
+        })
         .collect::<Vec<_>>()
 }
 
@@ -24,7 +26,7 @@ fn commands(args: &[OsString]) -> Vec<OsString> {
 
     let sections = args.split(|x| x == "::").collect::<Vec<_>>();
     match &sections[..] {
-        &[tmpl, subs] if is_template(tmpl) => templatize(tmpl, subs),
+        &[tmpl, subs] if is_template(tmpl) => templatize(tmpl, dbg!(subs)),
         _ => sections.iter().map(|args| args.join(OsStr::new(" "))).collect(),
     }
 }
