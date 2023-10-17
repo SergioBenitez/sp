@@ -26,7 +26,7 @@ fn commands(args: &[OsString]) -> Vec<OsString> {
 
     let sections = args.split(|x| x == "::").collect::<Vec<_>>();
     match &sections[..] {
-        &[tmpl, subs] if is_template(tmpl) => templatize(tmpl, dbg!(subs)),
+        &[tmpl, subs] if is_template(tmpl) => templatize(tmpl, subs),
         _ => sections.iter().map(|args| args.join(OsStr::new(" "))).collect(),
     }
 }
